@@ -1,5 +1,7 @@
-<h1>Turbo Źródler 3000!</h1>
-<?php 
+<?php
 
-echo "Hola! PHP śmiga najlepszy język.";
-?>
+die(json_encode([
+    'meta' => [
+        'message' => 'turbo źródler 3000!'
+    ]
+]));
