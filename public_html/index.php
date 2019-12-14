@@ -13,7 +13,9 @@ if (!isset($_GET['function'])) {
     switch ($functionName) {
         case 'searchByTitle':
             $params = [];
-            $_POST['parameters'] ?: $params['type'] = $_POST['parameters'];
+            if ($_POST['type']) {
+                $params['type'] = $_POST['type'];
+            }
             $result = json_decode($omdbService->searchByTitle($_POST['title'], $params), true);
             if ($result["Response"] !== "True") {
                 die("Error");
