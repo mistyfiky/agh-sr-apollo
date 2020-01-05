@@ -27,7 +27,7 @@ if (!isset($_GET['function'])) {
                     continue;
                 }
                 if (($mod4 % 4) == 0) {
-                    $cards .= '<div class="row">';
+                    $cards .= '<div class="row flex">';
                 }
                 $cards .= '<div class="col s12 m3" ><div class="card"><div class="card-image">';
                 $cards .= '<img src="' . $movie["Poster"] . '">';
