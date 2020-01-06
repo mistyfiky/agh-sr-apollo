@@ -1,7 +1,8 @@
-.docker/**
-!.docker/apache2-custom.conf
-.dockerignore
-.editorconfig
-.git
-.idea
-README.md
+/.dockerignore
+/.idea
+/Dockerfile
+/.editorconfig
+/.git
+/.gitignore
+/README.md
+/vendor
