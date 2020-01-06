@@ -18,7 +18,7 @@ class OmdbService
 
     public function searchByTitle(string $title, $parameters = [])
     {
-        $result = $this->client->run("MATCH (n:Movie) WHERE n.title =~ '(?i).*{$title}.*' RETURN n");
+        $result = $this->client->run("MATCH (m:Movie) WHERE m.title =~ '(?i).*{$title}.*' RETURN m");
         $movies = [];
         foreach ($result->records() as $record) {
             foreach ($record->values() as $value) {
@@ -28,5 +28,32 @@ class OmdbService
             }
         }
         return $movies;
+    }
+
+    public function searchByGenre(string $genre)
+    {
+        $result = $this->client->run("MATCH (m:Movie)-[:HAS_GENRE]->(g:Genre) WHERE g.id = {$genre} RETURN m");
+        $movies = [];
+        foreach ($result->records() as $record) {
+            foreach ($record->values() as $value) {
+                if ($value instanceof Node) {
+                    $movies[] = $value->values();
+                }
+            }
+        }
+        return $movies;
+    }
+
+    public function availableGenres() {
+        $result = $this->client->run("MATCH (g:Genre) RETURN g");
+        $genres = [];
+        foreach ($result->records() as $record) {
+            foreach ($record->values() as $value) {
+                if ($value instanceof Node) {
+                    $genres[] = $value->values();
+                }
+            }
+        }
+        return $genres;
     }
 }
