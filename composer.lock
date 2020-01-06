@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1db05f001f4b1ab9be843135faf59efd",
+    "content-hash": "0ad8d2f584d0839f7e9e6b36da7b00f1",
     "packages": [
         {
             "name": "graphaware/neo4j-bolt",
@@ -545,6 +545,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.1"
+    },
     "platform-dev": []
 }
