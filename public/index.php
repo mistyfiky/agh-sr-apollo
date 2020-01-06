@@ -36,8 +36,8 @@ if (!isset($_GET['function'])) {
                 $mod4++;
             }
             die($cards);
-        case 'searchByGenre':
-            $movies = $omdbService->searchByGenre($_POST['genre']);
+        case 'searchByGenres':
+            $movies = $omdbService->searchByGenres($_POST['genres']);
             $cards = "";
             $mod4 = 0;
             foreach ($movies as $movie) {
