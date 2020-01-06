@@ -30,9 +30,10 @@ class OmdbService
         return $movies;
     }
 
-    public function searchByGenre(string $genre)
+    public function searchByGenres(array $genres)
     {
-        $result = $this->client->run("MATCH (m:Movie)-[:HAS_GENRE]->(g:Genre) WHERE g.id = {$genre} RETURN m");
+        $genresList = implode(', ', $genres);
+        $result = $this->client->run("MATCH (m:Movie)-[:HAS_GENRE]->(g:Genre) WHERE g.id IN [{$genresList}] RETURN m");
         $movies = [];
         foreach ($result->records() as $record) {
             foreach ($record->values() as $value) {
