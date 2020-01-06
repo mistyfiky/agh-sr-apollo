@@ -1,5 +1,8 @@
 <?php
-include 'OmdbService.php';
+
+namespace App;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 if (!isset($_GET['function'])) {
     die(json_encode([
@@ -16,23 +19,17 @@ if (!isset($_GET['function'])) {
             if ($_POST['type']) {
                 $params['type'] = $_POST['type'];
             }
-            $result = json_decode($omdbService->searchByTitle($_POST['title'], $params), true);
-            if ($result["Response"] !== "True") {
-                die("Error");
-            }
+            $movies = $omdbService->searchByTitle($_POST['title'], $params);
             $cards = "";
             $mod4 = 0;
-            foreach ($result["Search"] as $movie) {
-                if ($movie["Poster"] == 'N/A') {
-                    continue;
-                }
+            foreach ($movies as $movie) {
                 if (($mod4 % 4) == 0) {
                     $cards .= '<div class="row flex">';
                 }
                 $cards .= '<div class="col s12 m3" ><div class="card"><div class="card-image">';
-                $cards .= '<img src="' . $movie["Poster"] . '">';
-                $cards .= '<span class="card-title">' . $movie["Title"] . '</span></div><div class="card-content"><p>IMDB ID: ';
-                $cards .= $movie["imdbID"] . '</p></div></div></div>';
+                $cards .= '<img src="' . $movie['poster_image'] . '">';
+                $cards .= '<span class="card-title">' . $movie['title'] . '</span></div><div class="card-content"><p>ID: ';
+                $cards .= $movie['id'] . '</p></div></div></div>';
                 if (($mod4 % 4) == 3) {
                     $cards .= '</div>';
                 }
