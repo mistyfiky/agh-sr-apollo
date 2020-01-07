@@ -2,9 +2,17 @@
 
 namespace App;
 
+use Sentry;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
+Sentry\init(['dsn' => 'superapiklucz' ]);
+
 if (!isset($_GET['function'])) {
+    $omdbService = new OmdbService();
+    $movies = $omdbService->recommend([471, 797, 770, 564]);
+    var_dump($movies);
+    die();
     die(json_encode([
         'meta' => [
             'message' => 'turbo źródler 3000!'
