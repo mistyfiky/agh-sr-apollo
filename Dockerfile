@@ -19,7 +19,7 @@ RewriteRule ^(.*)$ $1 [R=200,L]\n\
  && a2enconf apache2-custom
 RUN echo "\
 PassEnv SENTRY_DSN\n\
-PassEnv SENTRY_DSN\n\
+PassEnv NEO4J_URI\n\
 " > /etc/apache2/conf-enabled/expose-env.conf
 COPY --from=composer /app/vendor /var/www/vendor
 COPY ./public /var/www/public
