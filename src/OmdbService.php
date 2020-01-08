@@ -12,7 +12,7 @@ class OmdbService
     public function __construct()
     {
         $this->client = ClientBuilder::create()
-            ->addConnection('bolt', 'bolt://delphi')
+            ->addConnection('bolt', getenv('NEO4J_URI'))
             ->build();
     }
 

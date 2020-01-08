@@ -6,7 +6,7 @@ use Sentry;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Sentry\init(['dsn' => 'superapiklucz' ]);
+Sentry\init(['dsn' => getenv('SENTRY_DSN') ]);
 
 if (!isset($_GET['function'])) {
     $omdbService = new OmdbService();
