@@ -9,10 +9,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 Sentry\init(['dsn' => getenv('SENTRY_DSN') ]);
 
 if (!isset($_GET['function'])) {
-    $omdbService = new OmdbService();
-    $movies = $omdbService->recommend([471, 797, 770, 564]);
-    var_dump($movies);
-    die();
     die(json_encode([
         'meta' => [
             'message' => 'turbo źródler 3000!'
@@ -28,40 +24,10 @@ if (!isset($_GET['function'])) {
                 $params['type'] = $_POST['type'];
             }
             $movies = $omdbService->searchByTitle($_POST['title'], $params);
-            $cards = "";
-            $mod4 = 0;
-            foreach ($movies as $movie) {
-                if (($mod4 % 4) == 0) {
-                    $cards .= '<div class="row flex">';
-                }
-                $cards .= '<div class="col s12 m3" ><div class="card"><div class="card-image">';
-                $cards .= '<img src="' . $movie['poster_image'] . '">';
-                $cards .= '<span class="card-title">' . $movie['title'] . '</span></div><div class="card-content"><p>ID: ';
-                $cards .= $movie['id'] . '</p></div></div></div>';
-                if (($mod4 % 4) == 3) {
-                    $cards .= '</div>';
-                }
-                $mod4++;
-            }
-            die($cards);
+            die($omdbService->generateCards($movies));
         case 'searchByGenres':
             $movies = $omdbService->searchByGenres($_POST['genres']);
-            $cards = "";
-            $mod4 = 0;
-            foreach ($movies as $movie) {
-                if (($mod4 % 4) == 0) {
-                    $cards .= '<div class="row flex">';
-                }
-                $cards .= '<div class="col s12 m3" ><div class="card"><div class="card-image">';
-                $cards .= '<img src="' . $movie['poster_image'] . '">';
-                $cards .= '<span class="card-title">' . $movie['title'] . '</span></div><div class="card-content"><p>ID: ';
-                $cards .= $movie['id'] . '</p></div></div></div>';
-                if (($mod4 % 4) == 3) {
-                    $cards .= '</div>';
-                }
-                $mod4++;
-            }
-            die($cards);
+            die($omdbService->generateCards($movies));
         case 'getAvailableGenres':
             $genres = $omdbService->availableGenres();
             $options = "";
@@ -69,6 +35,12 @@ if (!isset($_GET['function'])) {
                 $options .= '<option value="' . $genre['id'] . '">' . $genre['name'] . '</option>';
             }
             die($options);
+        case 'searchByList':
+            $movies = $omdbService->searchByList($_POST['moviesIds']);
+            die($omdbService->generateCards($movies, false));
+        case 'recommend':
+            $movies = $omdbService->recommend($_POST['moviesIds']);
+            die($omdbService->generateCards($movies));
     }
 
 }
