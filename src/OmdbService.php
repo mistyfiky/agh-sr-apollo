@@ -79,15 +79,16 @@ class OmdbService
         $watchedMoviesList = implode(', ', $watchedMoviesIds);
         $genres = $this->countGenreOccurances($watchedMoviesList);
         if (sizeof($genres) === 0) {
-
+        } else if (sizeof($genres) === 1) {
+            $genresList = $genres[0]['genreObject']['id'];
         } else if (sizeof($genres) > 1) {
-            $genresList = $genres[0]['genreObject']['id'] . "," . $genres[rand(1, sizeof($genres))]['genreObject']['id'];
+            $genresList = $genres[0]['genreObject']['id'] . "," . $genres[rand(1, sizeof($genres) - 1)]['genreObject']['id'];
         }
-
         return $this->recommendByGenres($watchedMoviesList, $genresList);
     }
 
-    private function recommendByGenres($watchedMoviesList, $genresList) {
+    private function recommendByGenres($watchedMoviesList, $genresList)
+    {
         $result = $this->client->run("MATCH (m:Movie)-[r:HAS_GENRE]->(g:Genre) WITH m, rand() as random WHERE NOT m.id IN [{$watchedMoviesList}] AND g.id IN [{$genresList}] RETURN DISTINCT m, random ORDER BY random LIMIT 8");
         $movies = [];
         foreach ($result->records() as $record) {
@@ -113,7 +114,8 @@ class OmdbService
         return $genresArray;
     }
 
-    public function generateCards($movieNodes, $addable = true) {
+    public function generateCards($movieNodes, $addable = true)
+    {
         $cards = "";
         $mod4 = 0;
         foreach ($movieNodes as $movie) {
@@ -129,7 +131,8 @@ class OmdbService
         return $cards;
     }
 
-    protected function generateCard($movieNode, $addable = true) {
+    protected function generateCard($movieNode, $addable = true)
+    {
         $card = "";
         $card .= '<div class="col s12 m3 movie-card-col">';
         $card .= '<div class="card">';
@@ -137,7 +140,7 @@ class OmdbService
         $card .= '<img src="' . $movieNode['poster_image'] . '">';
         $card .= '<span class="card-title">' . $movieNode['title'] . '</span>';
         if ($addable) {
-            $card .= '<a class="btn-floating halfway-fab waves-effect waves-light red add-movie" data-movieid="'.$movieNode['id'].'"><i class="material-icons">add</i></a>';
+            $card .= '<a class="btn-floating halfway-fab waves-effect waves-light red add-movie" data-movieid="' . $movieNode['id'] . '"><i class="material-icons">add</i></a>';
         }
         $card .= '</div>';
         $card .= '<div class="card-content">';
