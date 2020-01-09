@@ -17,6 +17,10 @@ RewriteCond %{REQUEST_METHOD} OPTIONS\n\
 RewriteRule ^(.*)$ $1 [R=200,L]\n\
 " > /etc/apache2/conf-available/apache2-custom.conf\
  && a2enconf apache2-custom
+RUN echo "\
+PassEnv SENTRY_DSN\n\
+PassEnv NEO4J_URI\n\
+" > /etc/apache2/conf-enabled/expose-env.conf
 COPY --from=composer /app/vendor /var/www/vendor
 COPY ./public /var/www/public
 COPY ./src /var/www/src

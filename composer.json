@@ -3,7 +3,8 @@
     "type": "project",
     "require": {
         "php": ">=7.1",
-        "graphaware/neo4j-php-client": "^4.0"
+        "graphaware/neo4j-php-client": "^4.0",
+        "sentry/sdk": "2.0.3"
     },
     "autoload": {
         "psr-4": {
