@@ -41,6 +41,8 @@ if (!isset($_GET['function'])) {
         case 'recommend':
             $movies = $omdbService->recommend($_POST['moviesIds']);
             die($omdbService->generateCards($movies));
+        case 'triggerError':
+            throw new \Exception("Nie ma to jak pisać specjalnie funkcje które służą tylko temu, żeby się wywalić.");
     }
 
 }
