@@ -7,7 +7,7 @@ RUN docker-php-ext-install bcmath
 WORKDIR /var/www
 RUN sed -ri -e 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/*.conf\
  && rmdir /var/www/html
-RUN a2enmod headers rewrite
+RUN a2enmod headers rewrite status
 RUN echo "\
 ServerName apollo\n\
 Header always set Access-Control-Allow-Origin \"*\"\n\
@@ -16,7 +16,8 @@ RewriteEngine On\n\
 RewriteCond %{REQUEST_METHOD} OPTIONS\n\
 RewriteRule ^(.*)$ $1 [R=200,L]\n\
 " > /etc/apache2/conf-available/apache2-custom.conf\
- && a2enconf apache2-custom
+ && a2enconf apache2-custom\
+ && sed -i -e 's!#Require ip 192.0.2.0/24!Require all granted!g' /etc/apache2/mods-available/status.conf
 RUN echo "\
 PassEnv SENTRY_DSN\n\
 PassEnv NEO4J_URI\n\
